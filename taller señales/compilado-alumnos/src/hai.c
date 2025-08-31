@@ -10,12 +10,12 @@
 int ciclos = 0;
 
 void handler_ya_va2(int sig){
-	write("ya va!\n");
+	write(1, "ya va!\n", 7);
 
 	if(ciclos==5){
-	kill(SIGINT, getppid());
-	//exec
-	exit(0);
+		kill(getppid(), SIGINT);
+		//exec
+		exit(0);
 	}
 }
 void subrutina_hijo(){
@@ -29,13 +29,14 @@ int main(int argc, char* argv[]) {
 	pid_hijo = fork();
 	if(pid_hijo != 0){
 		for(int i = 1; i<6; i++){
-			write("sup\n");
+			write(1, "sup\n", 4); 
 			kill(pid_hijo, SIGURG);
 			sleep(1);
 			ciclos++;
 		}
 	}
 	else {
-	subrutina_hijo();
+		subrutina_hijo();
 	}
+	exit(0);
 }
